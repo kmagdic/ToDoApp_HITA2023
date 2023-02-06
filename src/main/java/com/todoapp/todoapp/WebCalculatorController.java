@@ -30,9 +30,10 @@ public class WebCalculatorController {
             result = a / b;
 
         model.addAttribute("result", result);
-
         return "calc_result.html";
+
     }
+
 
     @GetMapping("/sum")
     public void calculateSum(int a, int b, char oper, ServletResponse response) throws IOException {
