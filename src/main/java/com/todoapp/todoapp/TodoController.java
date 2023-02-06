@@ -25,6 +25,7 @@ public class TodoController {
     @GetMapping("/todos")
     public String showTodos(Model model) {
         model.addAttribute(todoList);
+        System.out.println("Prikaz stranice svih todo-ova 123");
         return "employee_todo_list_user.html";
     }
 
