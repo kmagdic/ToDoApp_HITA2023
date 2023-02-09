@@ -1,4 +1,4 @@
-package com.todoapp.todoapp;
+package com.todoapp.todoapp.calc;
 
 import jakarta.servlet.ServletResponse;
 import org.springframework.stereotype.Controller;
