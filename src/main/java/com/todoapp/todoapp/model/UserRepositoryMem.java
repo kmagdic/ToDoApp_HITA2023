@@ -48,4 +48,14 @@ public class UserRepositoryMem {
         }
         return user;
     }
+
+    public User getUserById(int id) {
+        User user = null;
+        for (User u : userList) {
+            if(u.getId() == id)
+                user = u;
+
+        }
+        return user;
+    }
 }

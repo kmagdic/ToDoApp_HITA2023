@@ -34,7 +34,7 @@
             <td th:text="${user.lastName}">Golijat</td>
             <td th:text="${user.oib}">1234567890125 </td>
             <td> <a href="#"> Delete </a> </td>
-            <td> <a href="#"> View </a> </td>
+            <td> <a th:href="@{'/showToDosForUser?userId=' + ${user.id}}"> View </a> </td>
         </tr>
        </tbody>
     </table>
