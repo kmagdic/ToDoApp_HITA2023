@@ -1,8 +1,6 @@
 package com.todoapp.todoapp;
 
-import com.todoapp.todoapp.model.Todo;
-import com.todoapp.todoapp.model.User;
-import com.todoapp.todoapp.model.UserRepositoryMem;
+import com.todoapp.todoapp.model.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,71 +15,56 @@ import java.util.List;
 public class TodoController {
     User currUser;
 
-    List<Todo> todoList = new ArrayList<>();
-
-    List<Todo> getTodoListForUserId(int userId) {
-        // filter todos only for that user
-        List<Todo> todoForUser = new ArrayList<>();
-        for(Todo todo: todoList) {
-            if(todo.getUser() != null)
-                if(todo.getUser().getId() == userId)
-                    todoForUser.add(todo);
-        }
-        return todoForUser;
-    }
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
-    UserRepositoryMem userRepository;
+    TodoRepository todoRepository;
 
-    @PostConstruct
-    public void initData() {
-
-        Todo todo1 = new Todo("Naučiti HTML", new Date());
-        todo1.setUser(userRepository.getUserById(1));
-        todoList.add(todo1);
-
-        Todo todo2 = new Todo("Naučiti CSS", new Date());
-        todo2.setUser(userRepository.getUserById(2));
-        todoList.add(todo2);
-
-        Todo todo3 = new Todo("Naučiti JS", new Date());
-        todo3.setUser(userRepository.getUserById(2));
-        todoList.add(todo3);
-    }
 
 
     // EMPLOYEE METHODS
 
     @GetMapping("/todos")
-    public String showTodos(int userId, Model model) {
-        model.addAttribute(getTodoListForUserId(userId));
-        model.addAttribute("currUser", userRepository.getUserById(userId));
+    public String showTodos(long userId, Model model) {
+
+        // add current user
+        User currUser = userRepository.findById(userId).get();
+        model.addAttribute("currUser", currUser);
+
+        // add all todo for that user
+        model.addAttribute(todoRepository.findByUser(currUser));
+
+
         return "employee_todo_list_user.html";
     }
 
 
     @GetMapping("/addNewTodo")
-    public String addNewTodo(int userId, String title) {
+    public String addNewTodo(long userId, String title) {
+        User currUser = userRepository.findById(userId).get();
+
         Todo newTodo = new Todo(title, new Date());
-        newTodo.setUser(userRepository.getUserById(userId));
-        todoList.add(newTodo);
+        newTodo.setUser(currUser);
+
+        todoRepository.save(newTodo);
 
         return "redirect:/todos?userId=" + userId;
 
     }
 
-    @GetMapping("/delete")
-    public String delete(String title) {
-        for(Todo todo : todoList) {
-            if(todo.getTitle().equals(title)) {
-                todoList.remove(todo);
-                break;
-            }
-        }
 
-        return "redirect:/todos";
+    @GetMapping("/delete")
+    public String delete(Long id) {
+
+        Todo todo = todoRepository.findById(id).get();
+        todoRepository.delete(todo);
+
+
+        return "redirect:/todos?userId=" + todo.getId();
 
     }
+
 
 
 
@@ -89,26 +72,22 @@ public class TodoController {
 
     @GetMapping("/users")
     public String showUsers(Model model) {
-        model.addAttribute(userRepository.getUserListWhichAreEmployees());
+        // add current user
+        model.addAttribute(userRepository.findByType(0));
 
         return "supervisor_employees.html";
     }
 
     @GetMapping("/showToDosForUser")
-    public String showToDosForUser(int userId, Model model) {
-        User user = userRepository.getUserById(userId);
+    public String showToDosForUser(long userId, Model model) {
+        User user = userRepository.findById(userId).get();
         model.addAttribute(user);
 
         // filter todos only for that user
-        model.addAttribute(getTodoListForUserId(userId));
+        model.addAttribute(todoRepository.findByUser(user));
 
         return "supervisor_employee_todos.html";
     }
-
-
-
-
-
 
 
 
@@ -123,7 +102,7 @@ public class TodoController {
     public String login(String email, String pass, Model model) {
 
         // find user in list
-        User user = userRepository.getUserByUsernameAndPassword(email, pass);
+        User user = userRepository.findByEmailAndPassword(email, pass);
 
         if(user != null) {
             System.out.println("User found: " + user);
@@ -141,4 +120,10 @@ public class TodoController {
     }
 
 
+    // UTITILTY METHODS
+
+    @GetMapping("/")
+    public String redirectToLogin() {
+        return "redirect:/login";
+    }
 }

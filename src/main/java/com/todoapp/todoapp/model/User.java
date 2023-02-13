@@ -1,9 +1,18 @@
 package com.todoapp.todoapp.model;
 
-public class User {
-    static int idCounter = 0;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
-    int id;
+@Entity(name="APP_USER")
+public class User {
+    static long idCounter = 0;
+
+    @Id
+    @GeneratedValue()
+    Long id;
+
+
     String email;
     String password;
     int type = 0; // 0 - employee, 1 - supervisor
@@ -12,7 +21,8 @@ public class User {
     String lastName;
     String oib;
 
-
+    public User() {
+    }
 
 
     public User(String email, String password) {
@@ -80,7 +90,7 @@ public class User {
         this.oib = oib;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 }

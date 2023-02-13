@@ -44,7 +44,7 @@
         <tr th:each="item : ${todoList}">
             <td th:text="${item.title}">User</td>
             <td th:text="${item.date}">1.2.2023. 10:23</td>
-            <td><a th:href="@{'/delete?title=' + ${item.title}}">Delete</a></td>
+            <td><a th:href="@{'/delete?id=' + ${item.id}}">Delete</a></td>
         </tr>
 
         </tbody>
