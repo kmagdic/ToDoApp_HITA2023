@@ -28,7 +28,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${userList}">
+        <tr th:each="user : ${userList}" th:onclick="|window.location.href = '/showToDosForUser?userId=${user.id}'|">
             <td th:text="${user.id}">1.</td>
             <td th:text="${user.firstName}">David</td>
             <td th:text="${user.lastName}">Golijat</td>
