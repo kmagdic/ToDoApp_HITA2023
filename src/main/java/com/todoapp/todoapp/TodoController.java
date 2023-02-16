@@ -24,7 +24,7 @@ public class TodoController {
 
 
     @GetMapping("/init")
-    void init() {
+    String init() {
 
         List<User> testUsers = (List<User>) userRepository.findAll();
         System.out.println(testUsers);
@@ -38,6 +38,7 @@ public class TodoController {
         user.setType(1);
 
         userRepository.save(user);
+        return "login.html";
     }
 
     // EMPLOYEE METHODS
