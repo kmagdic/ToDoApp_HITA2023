@@ -23,6 +23,15 @@ public class TodoController {
 
 
 
+    @PostConstruct
+    void init() {
+
+        List<User> testUsers = (List<User>) userRepository.findAll();
+        System.out.println(testUsers);
+
+
+    }
+
     // EMPLOYEE METHODS
 
     @GetMapping("/todos")
@@ -61,7 +70,7 @@ public class TodoController {
         todoRepository.delete(todo);
 
 
-        return "redirect:/todos?userId=" + todo.getId();
+        return "redirect:/todos?userId=" + todo.getUser().getId();
 
     }
 
@@ -88,6 +97,17 @@ public class TodoController {
 
         return "supervisor_employee_todos.html";
     }
+
+
+    @GetMapping("/deleteBySupervisor")
+    public String deleteBySupervisor(Long id) {
+        Todo todo = todoRepository.findById(id).get();
+        todoRepository.delete(todo);
+
+        return "redirect:/showToDosForUser?userId=" + todo.getUser().getId();
+
+    }
+
 
 
 

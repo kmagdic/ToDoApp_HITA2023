@@ -1,5 +1,6 @@
 package com.todoapp.todoapp.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -9,9 +10,8 @@ public class User {
     static long idCounter = 0;
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue
     Long id;
-
 
     String email;
     String password;
@@ -92,5 +92,18 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", type=" + type +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", oib='" + oib + '\'' +
+                '}';
     }
 }
