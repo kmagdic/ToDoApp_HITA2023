@@ -23,7 +23,7 @@ public class TodoController {
 
 
 
-    @PostConstruct
+    @GetMapping("/init")
     void init() {
 
         List<User> testUsers = (List<User>) userRepository.findAll();
@@ -34,6 +34,10 @@ public class TodoController {
         System.out.println(testUsers2);
 
 
+        User user = new User("admin@mail.com", "test123");
+        user.setType(1);
+
+        userRepository.save(user);
     }
 
     // EMPLOYEE METHODS
