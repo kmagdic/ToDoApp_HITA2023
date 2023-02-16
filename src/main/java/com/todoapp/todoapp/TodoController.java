@@ -30,14 +30,15 @@ public class TodoController {
         System.out.println(testUsers);
 
 
-        List<User> testUsers2 = (List<User>) userRepository.findByTitleAndSortNative("Karlo");
-        System.out.println(testUsers2);
+        // List<User> testUsers2 = (List<User>) userRepository.findByTitleAndSortNative("Karlo");
+        // System.out.println(testUsers2);
 
 
         User user = new User("admin@mail.com", "test123");
         user.setType(1);
-
         userRepository.save(user);
+
+
         return "login.html";
     }
 
