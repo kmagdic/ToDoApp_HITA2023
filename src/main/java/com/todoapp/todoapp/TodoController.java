@@ -30,6 +30,10 @@ public class TodoController {
         System.out.println(testUsers);
 
 
+        List<User> testUsers2 = (List<User>) userRepository.findByTitleAndSortNative("Karlo");
+        System.out.println(testUsers2);
+
+
     }
 
     // EMPLOYEE METHODS
@@ -108,7 +112,18 @@ public class TodoController {
 
     }
 
+    @GetMapping("/addNewEmployee")
+    public String addNewEmpoyee(String fname, String lname, String email, String pass) {
+        User user = new User();
+        user.setFirstName(fname);
+        user.setLastName(lname);
+        user.setEmail(email);
+        user.setPassword(pass);
 
+        userRepository.save(user);
+
+        return "redirect:/users";
+    }
 
 
     // LOGIN METHODS
