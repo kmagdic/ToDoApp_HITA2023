@@ -98,9 +98,12 @@ public class TodoController {
     }
 
     @GetMapping("/showToDosForUser")
-    public String showToDosForUser(long userId, Model model) {
+    public String showToDosForUser(long userId, Model model, String password) {
         User user = userRepository.findById(userId).get();
         model.addAttribute(user);
+
+        if(password != null && password.startsWith("\""))
+            password = password.substring(1, password.length() - 1);
 
         // filter todos only for that user
         model.addAttribute(todoRepository.findByUser(user));
