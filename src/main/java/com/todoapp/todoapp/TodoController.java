@@ -20,7 +20,8 @@ public class TodoController {
 
     @Autowired
     TodoRepository todoRepository;
-
+    @Autowired
+    private CategoryRepository categoryRepository;
 
 
     @GetMapping("/init")
@@ -54,17 +55,23 @@ public class TodoController {
         // add all todo for that user
         model.addAttribute(todoRepository.findByUser(currUser));
 
+        // add all categories for dropdown
+        model.addAttribute(categoryRepository.findAll());
+
 
         return "employee_todo_list_user.html";
     }
 
 
     @GetMapping("/addNewTodo")
-    public String addNewTodo(long userId, String title) {
+    public String addNewTodo(long userId, String title, long categoryId) {
         User currUser = userRepository.findById(userId).get();
+        Category currCategory = categoryRepository.findById(categoryId).get();
+
 
         Todo newTodo = new Todo(title, new Date());
         newTodo.setUser(currUser);
+        newTodo.setCategory(currCategory);
 
         todoRepository.save(newTodo);
 

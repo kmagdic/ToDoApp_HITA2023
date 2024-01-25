@@ -19,6 +19,11 @@ public class Todo {
     private User user;
 
 
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+
     public Todo() {
     }
 
@@ -57,5 +62,13 @@ public class Todo {
 
     public Long getId() {
         return id;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
